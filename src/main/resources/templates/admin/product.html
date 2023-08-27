@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+<body>
+<div th:include="/admin/layout/nav.html"></div>
+	<div class="container" >
+					<form th:action="@{/admin}" th:object="${product}" method="post"
+						enctype="multipart/form-data">
+						<div class="card">
+							<div class="card-body">
+								<div class="row col">
+									<div class="form-group col-4">
+										<label for="product_id">ID</label> <input type="text"
+											class="form-control" th:field="*{productId}" id="product_id"
+											aria-describedby="product_id" placeholder="ID sản phẩm"
+											readonly>
+									</div>
+									<div class="form-group  col-4">
+										<label for="product_name">Tên sản phẩm</label> <input
+											type="text" class="form-control" th:field="*{productName}"
+											id="product_name" aria-describedby="fullnameId"
+											placeholder="Tên sản phẩm"> <small id="productName"
+											class="form-text "
+											th:if="${#fields.hasErrors('productName')}"
+											th:errors="*{productName}" style="color: red;"></small>
+									</div>
+									<div class="form-group col-4">
+										<label for="category_id">Loại</label> <select
+											class="form-control" id="category_id" name="category_id"
+											th:selected="*{category}">
+											<option value="0">-- Chọn loại hàng --</option>
+											<option th:each="category : ${categorys}"
+												th:value="${category.categoryId}"
+												th:text="${category.categoryName}"
+												th:selected="${category.categoryId} == ${product?.category?.categoryId}"></option>
+										</select>
+
+									</div>
+									<div class="form-group  col-4">
+										<label for="price">Giá</label> <input type="number"
+											class="form-control" th:field="*{price}" id="price"
+											aria-describedby="price" placeholder="Giá sản phẩm">
+										<small id="price" class="form-text "
+											th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+											style="color: red;"></small>
+
+									</div>
+									<div class="form-group  col-4">
+										<label for="quantity">Số lượng</label> <input type="number"
+											class="form-control" th:field="*{quantity}" id="quantity"
+											aria-describedby="quantity" placeholder="Số lượng"> <small
+											id="quantity" class="form-text "
+											th:if="${#fields.hasErrors('quantity')}"
+											th:errors="*{quantity}" style="color: red;"></small>
+
+									</div>
+									<div class="form-group  col-4">
+										<label for="discount">Giảm giá</label> <input type="text"
+											class="form-control" th:field="*{discount}" id="discount"
+											aria-describedby="discount" placeholder="Giảm giá"> <small
+											id="discount" class="form-text "
+											th:if="${#fields.hasErrors('discount')}"
+											th:errors="*{discount}" style="color: red;"></small>
+									</div>
+									<div class="form-group col-4">
+										<label for="producer_id"> NSX</label> <select
+											class="form-control" id="producer_id" name="producer_id"
+											th:selected="*{producer}">
+											<option value="">-- Chọn NSX --</option>
+											<option th:each="producer : ${producers}"
+												th:value="${producer.producerId}"
+												th:text="${producer.producerName}"
+												th:selected="${producer.producerId} == ${product?.producer?.producerId}"></option>
+										</select>
+									</div>
+									<div class="form-group col-4">
+										<label for="image">Hình ảnh</label> <img id="image-preview"
+											class="img-thumbnail" th:src="${product.image}"
+											alt="Preview Image"> <input type="file"
+											class="form-control img-fluid" id="image" th:field="*{image}"
+											name="image">
+										<div class="form-text " style="color: red;"
+											th:if="${hasMessage}">chưa chọn ảnh</div>
+										<div th:unless="${hasMessage}"></div>
+									</div>
+
+									<input type="hidden" id="selectedCategory"
+										name="selectedCategory" th:value="${selectedCategory}" /> <input
+										type="hidden" id="selectedManufacturer"
+										name="selectedManufacturer" th:value="${selectedManufacturer}" />
+								</div>
+
+							</div>
+							<div class="card-footer text-muted">
+								<button formaction="/admin/create" class="btn btn-primary">Create</button>
+								<button formaction="/admin/update" class="btn btn-warning"
+									onclick="return confirmUpdate()">Update</button>
+								<button formaction="/admin/delete" class="btn btn-danger"
+									onclick="return confirmDelete()">Delete</button>
+								<button formaction="/admin/reset" class="btn btn-info">Reset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+</body>
+</html>

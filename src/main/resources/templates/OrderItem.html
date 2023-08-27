@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>EShopper - Bootstrap Shop Template</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-buttons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-buttons li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.pagination-buttons li a {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #000;
+}
+
+.pagination-buttons li.active a {
+    background-color: #ccc;
+}
+
+</style>
+<!-- Favicon -->
+<link th:href="@{/../img/favicon.ico}" rel="icon">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap}"
+	rel="stylesheet">
+
+<!-- Font Awesome -->
+<link
+	th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css}"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link th:href="@{/css/style.css}" rel="stylesheet">
+
+</head>
+
+<body>
+	<div th:include="/layout/nav.html"></div>
+	<!-- Navbar End -->
+	<section layout:fragment="content">
+		<div class="col mt-4">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="userEditing-tab"
+						data-toggle="tab" data-target="#userEditing" type="button"
+						role="tab" aria-controls="userEditing" aria-selected="true">Order
+						List</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="userList-tab" data-toggle="tab"
+						data-target="#userList" type="button" role="tab"
+						aria-controls="userList" aria-selected="false">OrderItem
+						List</button>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="userEditing"
+					role="tabpanel" aria-labelledby="userEditing-tab">
+					<table class="table table-stripe">
+						<tr>
+							<th>Order ID</th>
+							<th>Date</th>
+							<th>Total Price</th>
+							<th>Username</th>
+						</tr>
+						<tr th:each="order : ${orders}">
+							<td th:text="${order.orderId}"></td>
+							<td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+							
+							<td th:text="${order.totalAmount}"></td>
+							<td th:text="${order.user.username}"></td>
+							<td><a
+								th:href="@{/OrderItem/{orderId}(orderId=${order.orderId})}">Edit</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+				<div class="tab-pane fade" id="userList" role="tabpanel"
+					aria-labelledby="userList-tab">
+					<table class="table table-bordered text-center mb-0">
+						<thead class="bg-secondary text-dark">
+							<tr>
+								<th>ID đơn hàng</th>
+								<th>Tên sản phẩm</th>
+								<th>Số lượng</th>
+								<th>Giá</th>
+							</tr>
+						</thead>
+						<tbody class="align-middle ">
+							<tr th:each="orderDetail : ${orderDetails}">
+								<td th:text="${orderDetail.order.orderId}"></td>
+								<td th:text="${orderDetail.product.productName}"></td>
+								<td th:text="${orderDetail.quantity}"></td>
+								<td th:text="${orderDetail.price}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="pagination">
+								    <ul class="pagination-buttons">
+								        <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+								            th:class="${pageNum == currentPage ? 'active' : ''}">
+								            <a th:href="@{/OrderItem(page=${pageNum}, size=${size}, keywords=${keywords})}"
+								                th:text="${pageNum + 1}"></a>
+								        </li>
+								    </ul>
+								</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<!-- Footer Start -->
+	<div th:include="/layout/footer.html"></div>
+	<!-- Footer End -->
+
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<!-- JavaScript Libraries -->
+	<script th:src="@{https://code.jquery.com/jquery-3.4.1.min.js}"></script>
+	<script
+		th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/lib/easing/easing.min.js}"></script>
+	<script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+	<!-- Contact Javascript File -->
+	<script th:src="@{/mail/jqBootstrapValidation.min.js}"></script>
+	<script th:src="@{/mail/contact.js}"></script>
+
+	<!-- Template Javascript -->
+	<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>

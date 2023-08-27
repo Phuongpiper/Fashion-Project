@@ -1,0 +1,261 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-buttons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-buttons li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.pagination-buttons li a {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #000;
+}
+
+.pagination-buttons li.active a {
+    background-color: #ccc;
+}
+
+</style>
+</head>
+
+<body>
+	<div th:include="/admin/layout/nav.html"></div>
+	<div class="col-4 ml-auto">
+    <form th:action="@{/admin}" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search by name" name="keywords" th:value="${keywords}">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+</div>
+
+	<main class="container-fluid">
+		<div class="col mt-4">
+			<div th:if="${not #strings.isEmpty(message)}" class="row">
+				<div class="col">
+					<div class="alert alert-success" th:text="${message}"></div>
+				</div>
+			</div>
+
+			<div th:if="${not #strings.isEmpty(error)}" class="row">
+				<div class="col">
+					<div class="alert alert-danger" th:text="${error}"></div>
+				</div>
+			</div>
+
+				
+					<form th:action="@{/admin}" th:object="${product}" method="post"
+						enctype="multipart/form-data">
+						<div class="card">
+							<div class="card-body">
+								<div class="row col">
+									<div class="form-group col-4">
+										<label for="product_id">ID</label> <input type="text"
+											class="form-control" th:field="*{productId}" id="product_id"
+											aria-describedby="product_id" placeholder="ID sản phẩm"
+											readonly>
+									</div>
+									<div class="form-group  col-4">
+										<label for="product_name">Tên sản phẩm</label> <input
+											type="text" class="form-control" th:field="*{productName}"
+											id="product_name" aria-describedby="fullnameId"
+											placeholder="Tên sản phẩm"> <small id="productName"
+											class="form-text "
+											th:if="${#fields.hasErrors('productName')}"
+											th:errors="*{productName}" style="color: red;"></small>
+									</div>
+									<div class="form-group col-4">
+										<label for="category_id">Loại</label> <select
+											class="form-control" id="category_id" name="category_id"
+											th:selected="*{category}" required>
+											<option value="0">-- Chọn loại hàng --</option>
+											<option th:each="category : ${categorys}"
+												th:value="${category.categoryId}"
+												th:text="${category.categoryName}"
+												th:selected="${category.categoryId} == ${product?.category?.categoryId}"></option>
+										</select>
+                                      <small class="form-text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+									</div>
+									<div class="form-group  col-4">
+										<label for="price">Giá</label> <input type="number"
+											class="form-control" th:field="*{price}" id="price"
+											aria-describedby="price" placeholder="Giá sản phẩm">
+										<small id="price" class="form-text "
+											th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+											style="color: red;"></small>
+
+									</div>
+									<div class="form-group  col-4">
+										<label for="quantity">Số lượng</label> <input type="number"
+											class="form-control" th:field="*{quantity}" id="quantity"
+											aria-describedby="quantity" placeholder="Số lượng"> <small
+											id="quantity" class="form-text "
+											th:if="${#fields.hasErrors('quantity')}"
+											th:errors="*{quantity}" style="color: red;"></small>
+
+									</div>
+									<div class="form-group  col-4">
+										<label for="discount">Giảm giá</label> <input type="text"
+											class="form-control" th:field="*{discount}" id="discount"
+											aria-describedby="discount" placeholder="Giảm giá"> <small
+											id="discount" class="form-text "
+											th:if="${#fields.hasErrors('discount')}"
+											th:errors="*{discount}" style="color: red;"></small>
+									</div>
+									<div class="form-group col-4">
+										<label for="producer_id"> NSX</label> <select
+											class="form-control" id="producer_id" name="producer_id"
+											th:selected="*{producer}">
+											<option value="0">-- Chọn NSX --</option>
+											<option th:each="producer : ${producers}"
+												th:value="${producer.producerId}"
+												th:text="${producer.producerName}"
+												th:selected="${producer.producerId} == ${product?.producer?.producerId}"></option>
+										</select>
+										 <small class="form-text text-danger" th:if="${#fields.hasErrors('producer')}" th:errors="*{producer}"></small>
+									</div>
+									<div class="form-group col-4">
+										<label for="image">Hình ảnh</label> <img id="image-preview"
+											class="img-thumbnail" th:src="${product.image}"
+											alt="Preview Image"> <input type="file"
+											class="form-control img-fluid" id="image" th:field="*{image}"
+											name="image">
+										<div class="form-text " style="color: red;"
+											th:if="${hasMessage}">Please select image</div>
+										<div th:unless="${hasMessage}"></div>
+									</div>
+
+									<input type="hidden" id="selectedCategory"
+										name="selectedCategory" th:value="${selectedCategory}" /> <input
+										type="hidden" id="selectedManufacturer"
+										name="selectedManufacturer" th:value="${selectedManufacturer}" />
+								</div>
+
+							</div>
+							<div class="card-footer text-muted">
+								<button formaction="/admin/create" class="btn btn-primary">Create</button>
+								<button formaction="/admin/update" class="btn btn-warning"
+									onclick="return confirmUpdate()">Update</button>
+								<button formaction="/admin/delete" class="btn btn-danger"
+									onclick="return confirmDelete()">Delete</button>
+								<button formaction="/admin/reset" class="btn btn-info">Reset</button>
+							</div>
+						</div>
+					</form>
+				<hr>
+				<hr>
+					<h1>List Product</h1>
+
+					<table class="table table-stripe">
+						<tr>
+							<td>ID</td>
+							<td>Tên sản phẩm</td>
+							<td>Giá</td>
+							<td>Số lượng</td>
+							<td>Giảm giá</td>
+							<td>Hình Ảnh</td>
+							<td>Loại</td>
+							<td>ID Nhà sản xuất</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr th:each="item : ${products}"
+							th:unless="${item.active == false}">
+							<td th:text="${item.productId}"></td>
+							<td th:text="${item.productName}"></td>
+							<td th:text="${item.price}"></td>
+							<td th:text="${item.quantity}"></td>
+							<td th:text="${item.discount}"></td>
+							<td><img width="10%"
+								th:src="@{'/uploads/' + ${item.image.substring(11)}}"
+								alt="Product Image"></td>
+							<td th:text="${item?.category?.categoryName}"></td>
+							<td th:text="${item?.producer?.producerName}"></td>
+							<td><a
+								th:href="@{/admin/edit/(productId=${item.productId})}">Edit</a>
+							</td>
+							<!-- Các cột khác -->
+						</tr>
+					</table>
+								<div class="pagination">
+								    <ul class="pagination-buttons">
+								        <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+								            th:class="${pageNum == currentPage ? 'active' : ''}">
+								            <a th:href="@{/admin(page=${pageNum}, size=${size}, keywords=${keywords})}"
+								                th:text="${pageNum + 1}"></a>
+								        </li>
+								    </ul>
+								</div>
+
+				</div>
+			
+	
+		<footer class="row"></footer>
+	</main>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+		$('#myTab button').on('click', function(event) {
+			event.preventDefault()
+			$(this).tab('show')
+		})
+		$(document).ready(function() {
+			$('#image').change(function() {
+				var file = $(this)[0].files[0];
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$('#image-preview').attr('src', e.target.result);
+				};
+				reader.readAsDataURL(file);
+			});
+		});
+		function confirmUpdate() {
+			return confirm("Bạn có chắc chắn muốn cập nhật sản phẩm?");
+		}
+
+		function confirmDelete() {
+			return confirm("Bạn có chắc chắn muốn xóa sản phẩm?");
+		}
+	</script>
+</body>
+
+</html>

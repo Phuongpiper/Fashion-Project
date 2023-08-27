@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>User Profile</title>
+<!-- Favicon -->
+<link href="/img/favicon.ico" rel="icon">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/css/style.css" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+	color: #d19c97;
+	font-weight: bold;
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<div th:include="/layout/nav.html"></div>
+<div class="container-fluid bg-secondary my-5">
+		<div class="row justify-content-md-center py-5 px-xl-5">
+			<div class="col-md-6 col-12 py-5">
+				<div class="text-center mb-2 pb-2">
+					<h2 class="section-title px-5 mb-3">
+						<span class="bg-secondary px-2">Update Password</span>
+					</h2>
+				</div>
+				<h1 style="color: #d19c97;" th:if="${messages}" th:text="${messages}"></h1>
+				<form th:action="@{/capnhatUser/update}" th:object="${user}"
+					method="post" name="sentMessage" id="contactForm"
+					novalidate="novalidate">
+					<div class="control-group"> UserId:
+						<input class="form-control border-white p-4" name="userId"
+							th:field="*{userId}" placeholder="UserId" required="required" readonly />
+						<p class="help-block text-danger"></p>
+					</div>
+
+					<div class="control-group">Username:
+						<input class="form-control border-white p-4" type="text"
+							name="username" th:field="*{username}" placeholder="Username"
+							required="required" readonly />
+						<p class="help-block text-danger"></p>
+						<small id="fullnameId" class="form-text" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></small><br />
+					</div>
+					<div class="control-group">Password:
+						<input class="form-control border-white p-4" type="text"
+							th:field="*{password}" placeholder="Password" required="required" />
+						<p class="help-block text-danger"></p>
+						<small id="passwordId" class="form-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></small><br />
+					</div>
+					<div class="control-group">Email:
+						<input class="form-control border-white p-4" type="text"
+							th:field="*{email}" placeholder="Password" required="required" />
+						<p class="help-block text-danger"></p>
+						<small id="emailId" class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></small><br />
+					</div>
+
+					<div>
+						<button class="btn py-2 px-4" type="submit"
+							style="background-color: #d19c97;" id="sendMessageButton">Update</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+<div th:include="/layout/footer.html"></div>
+</body>
+</html>

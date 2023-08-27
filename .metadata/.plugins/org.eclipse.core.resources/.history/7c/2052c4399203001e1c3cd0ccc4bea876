@@ -1,0 +1,156 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+</head>
+
+<body>
+	<main class="container-fluid">
+		<nav class="row">
+			<nav class="navbar navbar-expand-sm navbar-light  bg-light col">
+				<a class="navbar-brand" href="#">Administration</a>
+				<button class="navbar-toggler d-lg-none" type="button"
+					data-toggle="collapse" data-target="#collapsibleNavId"
+					aria-controls="collapsibleNavId" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse text-center"
+					id="collapsibleNavId">
+					<ul class="navbar-nav text-center mr-auto mt-2 mt-lg-0">
+						<li class="nav-item active"><a class="nav-link"
+							th:href="@{/admin}">Product</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/usermanagement}">User</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Inventory</a>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+		</nav>
+		<section class="row">
+			<div class="col mt-4">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="userEditing-tab"
+							data-toggle="tab" data-target="#userEditing" type="button"
+							role="tab" aria-controls="userEditing" aria-selected="true">Inventory
+							Editing</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="userList-tab" data-toggle="tab"
+							data-target="#userList" type="button" role="tab"
+							aria-controls="userList" aria-selected="false">Inventory
+							List</button>
+					</li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="userEditing"
+						role="tabpanel" aria-labelledby="userEditing-tab">
+						<form action="@{/inventory}" method="post" th:object=${productt}>
+							<div class="card">
+								<div class="card-body">
+									<div class="row col">
+										<div class="form-group col-4">
+											<label for="username">ID</label> <input type="text" 
+												class="form-control" id="id" aria-describedby="id" 
+												placeholder="Id kho" >
+										</div>
+										<div class="form-group col-4">
+											<label for="fullname">ID sản phẩm</label><select
+												class="form-control" name="product" >
+												<option value="">-- Chọn ID hàng --</option>
+												<option th:each="product : ${products}"
+													
+													th:text="${product.productId}"
+													th:selected="${product.productId}==${product?.product?.productId}"></option>
+											</select>
+											
+										</div>
+
+									</div>
+									<div class="row col">
+										<div class="form-group  col-4">
+											<label for="password">Số lượng</label> <input type="text"
+												class="form-control" id="quantity" 
+												aria-describedby="quantity" placeholder="Số lượng">
+										</div>
+										<div class="form-group  col-4">
+											<label for="email">Địa chỉ</label> <input type="text"
+												class="form-control"id="address" 
+												aria-describedby="address" placeholder="Địa chỉ kho">
+
+										</div>
+									</div>
+								</div>
+								<div class="card-footer text-muted">
+									<button class="btn btn-primary">Create</button>
+									<button class="btn btn-warning">Update</button>
+									<button class="btn btn-danger">Delete</button>
+									<button class="btn btn-info">Reset</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+					<div class="tab-pane fade" id="userList" role="tabpanel"
+						aria-labelledby="userList-tab">
+						<table class="table table-stripe">
+							<tr>
+								<td>ID</td>
+								<td>ID Sản Phẩm</td>
+								<td>Số lượng</td>
+								<td>Địa chỉ</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr th:each="item : ${inventorys}">
+								<td th:text="${item.inventoryId}"></td>
+								<td th:text="${item.product.productId}"></td>
+								<td th:text="${item.quantity}"></td>
+								<td th:text="${item.address}"></td>
+								<td><a
+									th:href="@{/inventory/edit/(inventoryId=${item.inventoryId})}">Edit</a>
+								</td>
+								<!-- Các cột khác -->
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="row"></footer>
+	</main>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+		$('#myTab button').on('click', function(event) {
+			event.preventDefault()
+			$(this).tab('show')
+		})
+	</script>

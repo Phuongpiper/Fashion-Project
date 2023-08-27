@@ -1,0 +1,147 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+</head>
+
+<body>
+<div th:include="/admin/layout/nav.html"></div>
+	<main class="container-fluid">
+			<div class="col mt-4">
+			<div th:if="${not #strings.isEmpty(message)}" class="row">
+					<div class="col">
+						<div class="alert alert-success" th:text="${message}"></div>
+					</div>
+				</div>
+
+				<div th:if="${not #strings.isEmpty(error)}" class="row">
+					<div class="col">
+						<div class="alert alert-danger" th:text="${error}"></div>
+					</div>
+				</div>
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="userEditing-tab"
+							data-toggle="tab" data-target="#userEditing" type="button"
+							role="tab" aria-controls="userEditing" aria-selected="true">Inventory
+							Editing</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="userList-tab" data-toggle="tab"
+							data-target="#userList" type="button" role="tab"
+							aria-controls="userList" aria-selected="false">Inventory
+							List</button>
+					</li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="userEditing"
+						role="tabpanel" aria-labelledby="userEditing-tab">
+						<form action="@{/inventory}" method="post" th:object="${inventory}">
+							<div class="card">
+								<div class="card-body">
+									<div class="row col">
+										<div class="form-group col-4">
+											<label for="username">ID</label> <input type="text"
+												class="form-control" name="inventoryId" id="id" aria-describedby="id" 
+												placeholder="Id kho" readonly th:value="${inventory?.inventoryId}" 
+												>
+										</div>
+
+										<div class="form-group col-4">
+											<label for="fullname">ID sản phẩm</label><select
+												class="form-control" id="product" name="product">
+												<option value="0">-- Chọn ID hàng --</option>
+												<option th:each="product : ${products}"
+													th:text="${product.productId}"
+													th:selected="${product.productId}==${inventory?.product?.productId}"></option>
+											</select>
+												<small class="form-text text-danger" th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></small>
+										</div>
+ 
+									</div>
+									<div class="row col">
+										<div class="form-group  col-4">
+											<label for="password">Số lượng</label> <input type="text"
+												class="form-control" id="quantity" name= "quantity"
+												aria-describedby="quantity" placeholder="Số lượng" th:value="${inventory?.quantity}" >
+												 <small id="quantity" class="form-text "
+												th:if="${#fields.hasErrors('quantity')}"
+												th:errors="*{quantity}" style="color: red;"></small>
+										</div>
+										<div class="form-group  col-4">
+											<label for="email">Địa chỉ</label> <input type="text"
+												class="form-control" id="address" name="address" aria-describedby="address"
+												placeholder="Địa chỉ kho"  th:value="${inventory?.address}">
+												<small id="address" class="form-text "
+												th:if="${#fields.hasErrors('address')}"
+												th:errors="*{address}"style="color: red;" ></small>
+										</div>
+									</div>
+								</div>
+								<div class="card-footer text-muted">
+									<button formaction="/inventory/create" class="btn btn-primary"  >Create</button>
+									<button formaction="/inventory/update" class="btn btn-warning">Update</button>
+									<button formaction="/inventory/delete" class="btn btn-danger">Delete</button>
+									<button formaction="/inventory/reset" class="btn btn-info">Reset</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+					<div class="tab-pane fade" id="userList" role="tabpanel" aria-labelledby="userList-tab">
+    <table class="table table-striped">
+        <tr>
+            <td>ID</td>
+            <td>ID Sản Phẩm</td>
+            <td>Số lượng</td>
+            <td>Địa chỉ</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr th:each="item : ${inventorys}" th:unless="${item.active == false}">
+            <td th:text="${item.inventoryId}"></td>
+            <td th:text="${item.product.productId}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.address}"></td>
+            <td><a th:href="@{/inventory/edit/(inventoryId=${item.inventoryId})}">Edit</a></td>
+            <!-- Các cột khác -->
+        </tr>
+    </table>
+</div>
+
+				</div>
+			</div>
+		<footer class="row"></footer>
+	</main>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+		$('#myTab button').on('click', function(event) {
+			event.preventDefault()
+			$(this).tab('show')
+		})
+		
+	</script>

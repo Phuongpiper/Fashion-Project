@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="SmartImportWizard">
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="H:\java5\eclipse\dangnhPC03033_lab6"/>
+			<item value="H:\java5\eclipse\lab5_DangnhPC03033"/>
+			<item value="H:\java5\eclipse\lab4_danhnhPC03033"/>
+			<item value="H:\java5\eclipse\Java5SD17306"/>
+			<item value="H:\java5\eclipse\PC03087_HongPhuong"/>
+			<item value="H:\java5\eclipse\PC03087-HongPhuong"/>
+			<item value="C:\Users\GF63\Documents\Zalo Received Files\PC02986-PhamXuanVinh"/>
+			<item value="H:\java5\eclipse\Fashion_Project"/>
+			<item value="C:\Users\GF63\Documents\Zalo Received Files\Lab2_PC03033_DangnhPC03033 (1)"/>
+			<item value="C:\Users\GF63\Documents\Zalo Received Files\Lab2_PC03033_DangnhPC03033"/>
+			<item value="H:\Java5-SpringMVC-master\Lab2Java5SU2020"/>
+			<item value="H:\java5\eclipse\CodeLor1_JAVA5"/>
+			<item value="H:\java5\eclipse\demo-github"/>
+			<item value="C:\Users\GF63\Downloads\pc03037_VuongTanPhat-1\pc03037_VuongTanPhat-1"/>
+			<item value="C:\Users\GF63\Documents\Zalo Received Files\SpringDemo\SpringDemo"/>
+			<item value="C:\Users\GF63\Desktop\HeathAndBeauty"/>
+		</list>
+	</section>
+	<section name="ExternalProjectImportWizard">
+	</section>
+</section>

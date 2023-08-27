@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>EShopper - Bootstrap Shop Template</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+<!-- Favicon -->
+<link th:href="@{/../img/favicon.ico}" rel="icon">
+<style>
+        .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+    </style>
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap}"
+	rel="stylesheet">
+
+<!-- Font Awesome -->
+<link
+	th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css}"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Topbar Start -->
+	<div th:include="/layout/nav.html"></div>
+	<!-- Navbar End -->
+
+
+	<!-- Page Header Start -->
+	<div class="container-fluid bg-secondary mb-5">
+		<div
+			class="d-flex flex-column align-items-center justify-content-center"
+			style="min-height: 300px">
+			<h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping
+				Cart</h1>
+			<div class="d-inline-flex">
+				<p class="m-0">
+					<a href="">Home</a>
+				</p>
+				<p class="m-0 px-2">-</p>
+				<p class="m-0">Shopping Cart</p>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+
+	<!-- Cart Start -->
+	<div class="container-fluid pt-5">
+		<div class="row px-xl-5">
+			<div class="col-lg-8 table-responsive mb-5">
+				<div id="cart-container">
+					<table class="table table-bordered text-center mb-0 cart-table">
+						<thead class="bg-secondary text-dark">
+							<tr>
+								<th>Products</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Total</th>
+								<th>Remove</th>
+							</tr>
+						</thead>
+						<tbody class="align-middle   ">
+							<tr th:each="item : ${cartProducts}">
+								<td class="align-middle"><img
+									th:src="@{'/uploads/' + ${item.product.image.substring(11)}}"
+									alt="Product Image" style="width: 50px;"
+									th:text="${item.product.productName}"></td>
+								<td class="align-middle"
+									th:text="${item.product.price -(item.product.price *item.product.discount)}"></td>
+
+								<td class="align-middle">
+									<div class="input-group quantity mx-auto" style="width: 100px;">
+										<div class="input-group-btn">
+											<button class="btn btn-sm btn-primary btn-minus"
+												th:attr="onclick='updateQuantity(\'' + ${item.cartProductId} + '\', \'decrease\')'">
+												<i class="fa fa-minus"></i>
+											</button>
+										</div>
+										<input type="text"
+											class="form-control form-control-sm bg-secondary text-center"
+											th:value="${item.quantity}" readonly>
+										<div class="input-group-btn">
+											<button class="btn btn-sm btn-primary btn-plus"
+												th:attr="onclick='updateQuantity(\'' + ${item.cartProductId} + '\', \'increase\')'">
+												<i class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</td>
+
+								<td class=" align-middle amount data-price"
+									th:text="${item.quantity*(item.product.price -(item.product.price *item.product.discount))}"></td>
+								<td class="align-middle"><a
+									th:href="@{/cart/delete/{cartProductId}(cartProductId=${item.cartProductId})}"
+									class="btn btn-sm btn-primary"> <i class="fa fa-times"></i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="card border-secondary mb-5">
+					<div class="card-header bg-secondary border-0">
+						<h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+					</div>
+					<div class="card-body">
+						<div class="d-flex justify-content-between mb-3 pt-1">
+							<h6 class="font-weight-medium">Name Product</h6>
+							<h6 class="font-weight-medium">Price</h6>
+						</div>
+						<table>
+							<tr th:each="item : ${cartProducts}">
+								<td class="align-middle "
+									style="padding-left: 10px; padding-right: 230px;"
+									th:text="${item.product.productName}"></td>
+								<td></td>
+								<td class="align-middle"
+									th:text="${item.product.price -(item.product.price *item.product.discount)}"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="card-footer border-secondary bg-transparent">
+						<div class="d-flex justify-content-between mt-2">
+							<h5 class="font-weight-bold">Total</h5>
+							<h5 class="font-weight-bold total-price" th:text="${totalPrice}"></h5>
+						</div>
+						<a class="btn btn-block btn-primary my-3 py-3"
+							th:href="@{/checkout/add}" id="buyButton">Proceed To
+							Checkout</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Cart End -->
+
+
+	<!-- Footer Start -->
+	<div th:include="/layout/footer.html"></div>
+	<!-- Footer End -->
+	<!-- Hộp thoại thông báo -->
+	<div id="overlay" class="overlay">
+        <div class="overlay-content">
+           <ul>
+        <!-- Sử dụng Thymeleaf để hiển thị danh sách sản phẩm không đủ số lượng -->
+        <h3>Không có sản phẩm đê thanh toán!!!</h3>
+        
+    </ul>
+			<a class="btn btn-primary" onclick="hideSuccessOverlay()" th:href="@{/cart}">Đóng</a>
+        </div>
+    </div>
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<!-- JavaScript Libraries -->
+	<script th:src="@{https://code.jquery.com/jquery-3.4.1.min.js}"></script>
+	<script
+		th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/lib/easing/easing.min.js}"></script>
+	<script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+	<!-- Contact Javascript File -->
+	<script th:src="@{/mail/jqBootstrapValidation.min.js}"></script>
+	<script th:src="@{/mail/contact.js}"></script>
+	<script th:src="@{/js/box.js}"></script>
+	<!-- Template Javascript -->
+	<script th:src="@{/js/main.js}"></script>
+	<!-- <script th:src="@{/js/quantity.js}"></script> -->
+	<!-- <script th:src="@{/js/quantity.js}"></script> -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	<script th:inline="javascript">
+		/* <![CDATA[ */
+
+		$(document).ready(
+				function() {
+					// Bắt sự kiện khi nhấn vào nút tăng giảm số lượng
+					$('.btn-minus, .btn-plus').click(
+							function() {
+								var cartProductId = $(this).closest('tr').data(
+										'cartProductId');
+								var action = $(this).data('action');
+
+								updateQuantity(cartProductId, action);
+							});
+				});
+
+		// Hàm cập nhật số lượng sản phẩm
+		function updateQuantity(cartProductId, action) {
+			// Gửi yêu cầu AJAX tới URL /cart/update/{cartProductId}/{action}
+			$.ajax({
+				url : '/cart/update/' + cartProductId + '/' + action,
+				type : 'GET',
+				success : function(result) {
+					// Cập nhật lại nội dung của phần tử bọc chứa bảng
+					$('#cart-container').html($(result).find('.cart-table'));
+
+					// Cập nhật tổng giá trị
+					updateTotalPrice();
+				}
+			});
+		}
+
+		// Hàm cập nhật tổng giá trị
+		function updateTotalPrice() {
+			// Tìm tất cả các phần tử có class "data-price" trong bảng
+			var priceElements = $('.cart-table .data-price');
+
+			// Tính toán tổng giá trị
+			var totalPrice = 0.0;
+			priceElements.each(function() {
+				var price = parseFloat($(this).text().replace(/,/g, ''));
+				totalPrice += price;
+			});
+
+			// Hiển thị tổng giá trị đã tính được
+			$('.total-price').text(totalPrice.toFixed(2));
+		}
+
+		/* ]]> */
+	</script>
+
+
+
+
+</body>
+
+</html>

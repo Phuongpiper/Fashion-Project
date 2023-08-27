@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;bin&apos; to &apos;pc03087_nguyenhongphuong/bin&apos;&#x0D;&#x0A;- Original project: &apos;pc03087_nguyenhongphuong&apos;&#x0D;&#x0A;- Destination element: &apos;pc03087_nguyenhongphuong/bin&apos;&#x0D;&#x0A;- Original element: &apos;pc03087_nguyenhongphuong/bin&apos;" description="Copy package" destination="/&lt;bin" element1="/&lt;bin" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1683817074613" version="1.0"/>
+</session>
